@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getWashes, getCompanies, exportWashes } from '../api/api';
+import { MdLocalCarWash } from "react-icons/md";
+import { FaHouseFlag } from "react-icons/fa6";
 
 const Dashboard = () => {
   const [washes, setWashes] = useState([]);
@@ -101,11 +103,13 @@ const Dashboard = () => {
 
         {/* Summary Stats */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="bg-blue-500 h-20 text-white p-4 rounded shadow text-center">
+          <div className="bg-blue-500 md:h-40 text-white p-4 rounded shadow flex flex-col space-y-4 items-center text-center">
+            <MdLocalCarWash size={30} />
             <p className="text-2xl font-bold">{totalWashes}</p>
             <p>Total Washes</p>
           </div>
-          <div className="bg-green-500 h-20 text-white p-4 rounded shadow text-center">
+          <div className="bg-green-500 md:h-40 text-white p-4 rounded shadow flex flex-col space-y-4 items-center text-center">
+            <FaHouseFlag size={30} />
             <p className="text-2xl font-bold">{companiesCount}</p>
             <p>Total Companies</p>
           </div>

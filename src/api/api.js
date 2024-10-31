@@ -7,31 +7,35 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
-  
- 
-  api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response) {
-        const { status } = error.response;
-  
-        if (status === 401 || status === 403) {
-          localStorage.removeItem('token');  
-          window.location.href = '/';       
-        } else if (status >= 500) {
-          alert('A server error occurred. Please try again later.');
-        }
+  if (config.url.startsWith('http://')) {
+    config.url = config.url.replace('http://', 'https://');
+  }
+
+  const token = localStorage.getItem('token');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      const { status } = error.response;
+
+      if (status === 401 || status === 403) {
+        localStorage.removeItem('token');
+        window.location.href = '/';
+      } else if (status >= 500) {
+        alert('A server error occurred. Please try again later.');
       }
-      return Promise.reject(error); 
     }
-  );
-  
+    return Promise.reject(error);
+  }
+);
+
 
 export const login = async (username, password) => {
   const params = new URLSearchParams();
@@ -69,7 +73,7 @@ export const addWash = async (washData) => {
 export const exportWashes = async (companyId, startDate, endDate) => {
   const response = await api.get('/washes/export/records', {
     params: { company_id: companyId, start_date: startDate, end_date: endDate },
-    responseType: 'blob', 
+    responseType: 'blob',
   });
 
   const url = window.URL.createObjectURL(new Blob([response.data]));
