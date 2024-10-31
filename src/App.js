@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import AddWash from './pages/AddWash';
+import Login from './pages/Login';
+import DashboardLayout from './components/DashboardLayout';
 
 function App() {
+  const [isAuthenticated, setIsAuthenticated] = useState(!!localStorage.getItem('token'));
+
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <div className="App">
+        {isAuthenticated ? (
+          <Routes>
+            <Route element={<DashboardLayout setIsAuthenticated={setIsAuthenticated} />}>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/add-wash" element={<AddWash />} />
+            </Route>
+          </Routes>
+        ) : (
+          <Login onLogin={handleLogin} />
+        )}
+      </div>
+    </Router>
   );
 }
 
