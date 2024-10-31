@@ -113,7 +113,7 @@ const Dashboard = () => {
       </div>
 
       {/* Second Row */}
-      <div className="bg-white rounded shadow p-6">
+      <div className="bg-white rounded shadow p-6 overflow-x-auto">
         <h2 className="text-xl font-semibold mb-4">Recent Washes</h2>
         <table className="w-full table-auto">
           <thead>
