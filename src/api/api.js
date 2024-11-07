@@ -114,7 +114,6 @@ export const updateUserRole = async (userId, newRole) => {
     const response = await api.patch(`/users/${userId}`, { role: newRole });
     return response.data;
   } catch (error) {
-    console.error('Error updating user role:', error);
     throw error;
   }
 };
