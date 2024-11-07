@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: records_frontend
+    container_name: records-frontend
     ports:
       - "3000:80"
     restart: always

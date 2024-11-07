@@ -32,9 +32,9 @@ function App() {
               <Route path="/" element={<Dashboard />} />
               <Route path="/add-wash" element={<AddWash />} />
               <Route
-                path='/admin'
+                path="/admin"
                 element={
-                  localStorage.getItem('role') === 'admin' ? (
+                  localStorage.getItem("role") === "admin" ? (
                     <Admin />
                   ) : (
                     <Navigate to="/" replace />

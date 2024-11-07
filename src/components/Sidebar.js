@@ -7,6 +7,8 @@ import { MdMenuOpen } from "react-icons/md";
 import { MdLibraryAdd } from "react-icons/md";
 import { FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineDashboard } from "react-icons/md";
+import { FaUbuntu } from 'react-icons/fa';
+import Admin from '../pages/Admin';
 
 const menuItems = [
   {
@@ -18,6 +20,11 @@ const menuItems = [
     icons: <MdLibraryAdd size={30} />,
     label: 'Add',
     path: '/add-wash'
+  },
+  {
+    icons: <FaUbuntu size={30} />,
+    label: 'Admin',
+    path: '/admin'
   }
 ]
 
