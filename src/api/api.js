@@ -50,7 +50,10 @@ export const login = async (username, password) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   });
-  localStorage.setItem('token', response.data.access_token);
+  const { access_token, role } = response.data;
+  localStorage.setItem('token', access_token);
+  localStorage.setItem('role', role);
+
   return response.data;
 };
 
@@ -84,3 +87,35 @@ export const exportWashes = async (companyId, startDate, endDate) => {
   link.click();
   document.body.removeChild(link);
 };
+
+
+export const registerUser = async (username, password) => {
+  const userData = {
+    username,
+    password,
+  };
+
+  try {
+    const response = await api.post('/register', userData);
+    return response.data;
+  } catch (error) {
+    throw error.response ? error.response.data : new Error("Failed to register user. Try again");
+  }
+}
+
+export const fetchUsers = async () => {
+  const response = await api.get('/users');
+  return response.data;
+};
+
+
+export const updateUserRole = async (userId, newRole) => {
+  try {
+    const response = await api.patch(`/users/${userId}`, { role: newRole });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating user role:', error);
+    throw error;
+  }
+};
+

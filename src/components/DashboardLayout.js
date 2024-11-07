@@ -15,7 +15,7 @@ const DashboardLayout = ({ setIsAuthenticated }) => {
   return (
     <div className="flex min-h-screen overflow-hidden">
       <Sidebar onLogout={handleLogout} />
-      <div className="flex-1 overflow-y-auto h-screen p-6 bg-gray-100">
+      <div className="flex-1 overflow-y-auto h-screen sm:p-2 md:p-6 bg-gray-100">
         <Outlet />
       </div>
     </div>

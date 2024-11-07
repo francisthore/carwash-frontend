@@ -27,12 +27,12 @@ export default function Sidebar({ onLogout }) {
   const navigate = useNavigate();
 
   return (
-    <nav className={`shadow-md h-screen p-2 flex flex-col duration-500 bg-blue-600 text-white ${open ? 'w-60' : 'w-16'}`}>
+    <nav className={`shadow-md h-screen sm:p-0 md:p2 flex flex-col duration-500 bg-blue-600 text-white ${open ? 'w-60' : 'w-10'}`}>
 
       {/* Header */}
-      <div className=' px-3 py-2 h-20 flex justify-between items-center'>
+      <div className=' px-1 py-2 h-20 flex justify-between items-center'>
         <img src={logo} alt="Logo" className={`${open ? 'w-20 bg-white p-2' : 'w-0'} rounded-md`} />
-        <div><MdMenuOpen size={34} className={` duration-500 cursor-pointer ${!open && ' rotate-180'}`} onClick={() => setOpen(!open)} /></div>
+        <div><MdMenuOpen size={34} className={` duration-500 cursor-pointer  ${!open && ' rotate-180'}`} onClick={() => setOpen(!open)} /></div>
       </div>
 
       {/* Body */}
@@ -42,7 +42,7 @@ export default function Sidebar({ onLogout }) {
           menuItems.map((item, index) => {
             return (
               <li key={index}
-              className='px-3 py-2 my-2 hover:bg-blue-800 rounded-md duration-300 cursor-pointer flex gap-2 items-center relative group'
+              className='px-1 py-2 my-2 hover:bg-blue-800 rounded-md duration-300 cursor-pointer flex gap-2 items-center relative group'
               onClick={() => navigate(item.path)}
               >
                 <div>{item.icons}</div>
@@ -56,7 +56,7 @@ export default function Sidebar({ onLogout }) {
         }
       </ul>
       {/* Footer with Logout */}
-      <div className='flex items-center gap-2 px-3 py-4 mt-auto hover:bg-blue-800 rounded-md cursor-pointer' onClick={onLogout}>
+      <div className='flex items-center gap-2 px-1 py-4 mt-auto hover:bg-blue-800 rounded-md cursor-pointer' onClick={onLogout}>
         <div><FaSignOutAlt size={30} /> </div>
         <p className={`${!open && 'w-0 translate-x-24'} duration-500 overflow-hidden`}>Logout</p>
         <p className={`${open && 'hidden'} absolute left-32 shadow-md rounded-md
