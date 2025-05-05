@@ -72,20 +72,52 @@ export const addWash = async (washData) => {
   return response.data;
 };
 
+export const addFuelRecord = async (fuelData) => {
+  const response = await api.post('/fuel-records', fuelData);
+  return response.data;
+};
 
-export const exportWashes = async (companyId, startDate, endDate) => {
+
+
+export const exportWashes = async (companyId, startDate, endDate, companyName) => {
   const response = await api.get('/washes/export/records', {
     params: { company_id: companyId, start_date: startDate, end_date: endDate },
     responseType: 'blob',
   });
 
+  const safeName = companyName.replace(/\s+/g, '_').toLowerCase();
+  const fileName = `${safeName}_washes_records_${startDate}_to_${endDate}.xlsx`;
+
   const url = window.URL.createObjectURL(new Blob([response.data]));
   const link = document.createElement('a');
   link.href = url;
-  link.setAttribute('download', `${companyId}_washes_record.xlsx`);
+  link.setAttribute('download', fileName);
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
+};
+
+
+export const exportFuelRecords = async (companyId, startDate, endDate, companyName) => {
+  const response = await api.get('/fuel-records/export/records', {
+    params: {
+      company_id: companyId,
+      start_date: startDate,
+      end_date: endDate
+    },
+    responseType: 'blob',
+  });
+
+  const safeName = companyName.replace(/\s+/g, '_').toLowerCase(); // optional sanitation
+  const fileName = `${safeName}_fuel_records_${startDate}_to_${endDate}.xlsx`;
+
+  const url = window.URL.createObjectURL(new Blob([response.data]));
+  const link = document.createElement('a');
+  link.href = url;
+  link.setAttribute('download', fileName);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
 };
 
 
@@ -116,5 +148,16 @@ export const updateUserRole = async (userId, newRole) => {
   } catch (error) {
     throw error;
   }
+};
+
+
+export const getLatestFuelPrice = async () => {
+  const response = await api.get('/fuel-price/latest');
+  return response.data.price;
+};
+
+
+export const setFuelPrice = async (payload) => {
+  return await api.post('/fuel-price/', payload);
 };
 

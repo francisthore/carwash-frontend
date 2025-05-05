@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { getWashes, getCompanies, exportWashes } from '../api/api';
-import { MdLocalCarWash } from "react-icons/md";
-import { FaHouseFlag } from "react-icons/fa6";
+import { getWashes, getCompanies } from '../api/api';
+import ExportForm from '../components/forms/ExportForm';
+import CurrentFuelPrice from '../components/forms/CurrentFuelPrice';
+import { MdLocalCarWash } from 'react-icons/md';
+import { FaHouseFlag } from 'react-icons/fa6';
 
 const Dashboard = () => {
   const [washes, setWashes] = useState([]);
   const [companies, setCompanies] = useState([]);
-  const [selectedCompanyId, setSelectedCompanyId] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
   const [companiesCount, setCompaniesCount] = useState(0);
   const [totalWashes, setTotalWashes] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,20 +32,6 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
-  const handleExport = async (e) => {
-    e.preventDefault();
-    if (!selectedCompanyId || !startDate || !endDate) {
-      alert("Please select a company, start date, and end date");
-      return;
-    }
-    try {
-      await exportWashes(selectedCompanyId, startDate, endDate);
-    } catch (error) {
-      console.error("Error exporting data:", error);
-      alert("Failed to export data.");
-    }
-  };
-
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -59,50 +44,11 @@ const Dashboard = () => {
   return (
     <div className="sm:p-1 lg:p-6">
       {/* First Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {/* Data Export Form */}
-        <div className="p-6 bg-white rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">Export Excel Data</h2>
-          <form onSubmit={handleExport} className="space-y-4">
-            <select
-              onChange={(e) => setSelectedCompanyId(e.target.value)}
-              value={selectedCompanyId}
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            >
-              <option value="">Select Company</option>
-              {companies.map((company) => (
-                <option key={company.id} value={company.id}>
-                  {company.name}
-                </option>
-              ))}
-            </select>
-            <div className="flex flex-wrap lg:space-x-4 lg:flex-nowrap space-y-4 lg:space-y-0">
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Start Date"
-                required
-              />
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="End Date"
-                required
-              />
-            </div>
-            <button type="submit" className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600">
-              Export
-            </button>
-          </form>
-        </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 p-5  gap-6 mb-6">
+        <ExportForm companies={companies} />
 
         {/* Summary Stats */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           <div className="bg-blue-500 md:h-40 text-white p-4 rounded shadow flex flex-col space-y-4 items-center text-center">
             <MdLocalCarWash size={30} />
             <p className="text-2xl font-bold">{totalWashes}</p>
@@ -113,11 +59,18 @@ const Dashboard = () => {
             <p className="text-2xl font-bold">{companiesCount}</p>
             <p>Total Companies</p>
           </div>
+          <div className="col-span-2 md:col-span-1">
+            <CurrentFuelPrice />
+          </div>
         </div>
       </div>
 
+
+
+
+
       {/* Second Row */}
-      <div className="bg-white rounded shadow p-6 overflow-x-auto">
+      <div className="bg-white rounded shadow p-6 overflow-x-auto mt-6">
         <h2 className="text-xl font-semibold mb-4">Recent Washes</h2>
         <table className="w-full table-auto">
           <thead>
@@ -147,9 +100,8 @@ const Dashboard = () => {
             <button
               key={page}
               onClick={() => handlePageChange(page)}
-              className={`px-4 py-2 rounded ${
-                currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200'
-              }`}
+              className={`px-4 py-2 rounded ${currentPage === page ? 'bg-blue-500 text-white' : 'bg-gray-200'
+                }`}
             >
               {page}
             </button>
